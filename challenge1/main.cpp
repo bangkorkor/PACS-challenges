@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <functional>
 
 using Vec = std::vector<double>;
 using Func = std::function<double(const Vec &)>; // function wrapper, I dont understand this syntax <double(const Vec&)>
+using GradFunc = std::function<Vec(const Vec &)>;
 
-struct parameters
+struct Parameters
 {
     Vec x0;       // x0 (starting point) displayed as a vector
     double a0;    // alpha zero
@@ -26,27 +28,88 @@ double norm(const Vec &v)
     return std::sqrt(sum);
 }
 
-double armijo()
+double armijo(const Parameters &params, Func &f, const Vec &grad_f)
 {
-    return 0;
+    double alpha = params.a0;
+    Vec xk = params.x0;
+    Vec x_next(xk.size()); // x_next is (xk − α0∇f(xk)), initializes x_next with the same size as xk,
+    do
+    {
+        for (int i = 0; i < xk.size(); ++i)
+        {
+            x_next[i] = xk[i] - alpha * grad_f[i]; // grad = ∇f(xk)
+        }
+        if (f(xk) - f(x_next) >= params.sigma * alpha * norm(grad_f) * norm(grad_f))
+            break;
+        alpha /= 2;
+    } while (true);
+    return alpha;
+}
+
+Vec gradientDecent(Func f, GradFunc grad_f, const Parameters &params)
+{
+    Vec xk = params.x0;
+    int k = 0; // number of iterations
+    while (k < params.kmax)
+    {
+        Vec grad = grad_f(xk); // grad = ∇f(xk)
+        double alpha = armijo(params, f, grad);
+
+        Vec x_next(xk.size());
+        for (int i = 0; i < xk.size(); ++i)
+        {
+            x_next[i] = xk[i] - alpha * grad[i];
+        }
+
+        if (norm(x_next) - norm(xk) < params.eps_s || std::abs(f(x_next) - f(xk)) < params.eps_r)
+        {
+            return x_next;
+        }
+        xk = x_next; // housekeeping update xk
+        ++k;
+        std::cout << "iteration numer " << k << "\n";
+        std::cout << "Minimum found at: (" << xk[0] << ", " << xk[1] << ")\n";
+        std::cout << "Function value at minimum: " << f(xk) << std::endl;
+        std::cout << "alpha is " << alpha << "\n\n";
+    }
+    std::cout << "no convergence, kmax reached"
+              << "\n";
+    return xk; // No convergence, k > kmax reached
 }
 
 int main()
 {
-    parameters params = {{1, 1}, 0, 1e-6, 1e-6, 100, 0.25}; // {{x0}, a0, eps_s, eps_r, kmax, sigma}
-    Func F = [](const Vec &x) -> double
+    Parameters params = {{0, 0}, 0.001, 1e-6, 1e-6, 1000, 0.5}; // {{x0}, a0, eps_s, eps_r, kmax, sigma}
+
+    // --- simple example f(x) = x^2 - 3x + 2
+    // Func g = [](const Vec &x) -> double
+    // {
+    //     return x[0] * x[0] - 3 * x[0] + 2;
+    // };
+
+    // GradFunc grad_g = [](const Vec &x) -> Vec
+    // {
+    //     return {2 * x[0] - 3}; // gradF = {2x -3}
+    // };
+
+    // Vec min_point_g = gradientDecent(g, grad_g, params);
+    // std::cout << "Minimum found at: (" << min_point_g[0] << ")\n";
+    // std::cout << "Function value at minimum: " << g(min_point_g) << std::endl;
+
+    // --- test case
+    Func f = [](const Vec &x) -> double
     {
         return x[0] * x[1] + 4 * x[0] * x[0] * x[0] * x[0] + x[1] * x[1] + 3 * x[0]; // f(x,y) = xy + 4*x^4 + y^2 + 3*x
     };
 
-    Vec vec1 = {5, 2.0, 4.1, 3.6};
-    for (double i : vec1)
+    GradFunc grad_f = [](const Vec &x) -> Vec
     {
-        std::cout << i << "\n";
-    }
+        return {x[1] + 16 * x[0] * x[0] * x[0] + 3, x[0] + 2 * x[0]}; // gradF = {y + 16*x^3 + 3, x + 2*y}
+    };
 
-    double norm1 = norm(vec1);
-    std::cout << norm1 << "\n";
+    Vec min_point_f = gradientDecent(f, grad_f, params);
+    std::cout << "Minimum found at: (" << min_point_f[0] << ", " << min_point_f[1] << ")\n";
+    std::cout << "Function value at minimum: " << f(min_point_f) << std::endl;
 
     return 0;
 }
