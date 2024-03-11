@@ -28,10 +28,9 @@ double norm(const Vec &v)
     return std::sqrt(sum);
 }
 
-double armijo(const Parameters &params, Func &f, const Vec &grad_f)
+double armijo(const Parameters &params, Func &f, const Vec &grad_f, const Vec &xk)
 {
     double alpha = params.a0;
-    Vec xk = params.x0;
     Vec x_next(xk.size()); // x_next is (xk − α0∇f(xk)), initializes x_next with the same size as xk,
     do
     {
@@ -42,6 +41,7 @@ double armijo(const Parameters &params, Func &f, const Vec &grad_f)
         if (f(xk) - f(x_next) >= params.sigma * alpha * norm(grad_f) * norm(grad_f))
             break;
         alpha /= 2;
+        std::cout << "lowering alpha\n";
     } while (true);
     return alpha;
 }
@@ -53,7 +53,7 @@ Vec gradientDecent(Func f, GradFunc grad_f, const Parameters &params)
     while (k < params.kmax)
     {
         Vec grad = grad_f(xk); // grad = ∇f(xk)
-        double alpha = armijo(params, f, grad);
+        double alpha = armijo(params, f, grad, xk);
 
         Vec x_next(xk.size());
         for (int i = 0; i < xk.size(); ++i)
@@ -79,7 +79,7 @@ Vec gradientDecent(Func f, GradFunc grad_f, const Parameters &params)
 
 int main()
 {
-    Parameters params = {{0, 0}, 0.001, 1e-6, 1e-6, 1000, 0.5}; // {{x0}, a0, eps_s, eps_r, kmax, sigma}
+    Parameters params = {{0, 0}, 0.01, 1e-6, 1e-6, 1000, 0.45}; // {{x0}, a0, eps_s, eps_r, kmax, sigma}
 
     // --- simple example f(x) = x^2 - 3x + 2
     // Func g = [](const Vec &x) -> double
@@ -104,7 +104,7 @@ int main()
 
     GradFunc grad_f = [](const Vec &x) -> Vec
     {
-        return {x[1] + 16 * x[0] * x[0] * x[0] + 3, x[0] + 2 * x[0]}; // gradF = {y + 16*x^3 + 3, x + 2*y}
+        return {x[1] + 16 * x[0] * x[0] * x[0] + 3, x[0] + 2 * x[1]}; // gradF = {y + 16*x^3 + 3, x + 2*y}
     };
 
     Vec min_point_f = gradientDecent(f, grad_f, params);
