@@ -1,6 +1,6 @@
 EXEC=main
 OBJECT=main.o 
-SRC=main.cpp
+SRC=gradientMethod.cpp
 
 $(EXEC): $(OBJECT)
 	g++ $(OBJECT) -o $(EXEC)

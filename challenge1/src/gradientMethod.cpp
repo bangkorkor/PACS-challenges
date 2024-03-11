@@ -9,8 +9,8 @@ using GradFunc = std::function<Vec(const Vec &)>;
 
 struct Parameters
 {
-    Vec x0;       // x0 (starting point) displayed as a vector
-    double a0;    // alpha zero
+    Vec x0;       // initial posision
+    double a0;    // initial alpha
     double eps_s; // s tolerances
     double eps_r; // r tolerances
     int kmax;     // maximum number of steps
