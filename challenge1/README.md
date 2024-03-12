@@ -12,6 +12,7 @@ This program finds the minimum using the gradient decent method. When running th
 - Armijo rule: (Explination in [pdf](https://github.com/bangkorkor/PACS-challenges/blob/main/challenge1/Challenge23-24-1.pdf))
 
 note: I am not shure the Armijo strategy is working properly, the step size seems to be constant. 
+note: I am not using ```if constexpr``` when taking user input, resulting in computationally inefficiency.
 
 ### Momentum/Heavy Ball Method
 
@@ -20,7 +21,7 @@ The minimization problem is solved by taking the following update rule:
 - $x_{k+1} = x_k + d_k\$
 - $d_{k+1} = \eta d_k - \alpha_{k+1} \nabla f(x_{k+1})\$
 
-The problem uses a constant step size $a_0$. 
+My heavy-ball algorithm uses a constant step size $a_0$. 
 
 
 ## Running the code ##
