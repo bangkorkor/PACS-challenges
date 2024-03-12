@@ -94,6 +94,7 @@ Vec gradientDecent(Func f, GradFunc grad_f, const Parameters &params, const int 
             x_next[i] = xk[i] - alpha * grad[i];
         }
 
+        // stoppinng conditions
         if (norm(x_next) - norm(xk) < params.eps_s || std::abs(f(x_next) - f(xk)) < params.eps_r)
         {
             return x_next;
