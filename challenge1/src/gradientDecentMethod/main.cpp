@@ -4,7 +4,7 @@
 #include <functional>
 
 using Vec = std::vector<double>;
-using Func = std::function<double(const Vec &)>; // function wrapper, I dont understand this syntax <double(const Vec&)>
+using Func = std::function<double(const Vec &)>;
 using GradFunc = std::function<Vec(const Vec &)>;
 
 struct Parameters
@@ -108,7 +108,7 @@ Vec gradientDecent(Func f, GradFunc grad_f, const Parameters &params, const int 
     }
     std::cout << "no convergence, kmax reached"
               << "\n";
-    return xk; // No convergence, k > kmax reached
+    return xk;
 }
 
 int main()
