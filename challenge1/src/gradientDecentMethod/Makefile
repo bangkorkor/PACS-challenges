@@ -1,12 +1,14 @@
 EXEC=main
 OBJECT=main.o 
 SRC=main.cpp
+CXX=g++
+CXXFLAGS=-std=c++20
 
 $(EXEC): $(OBJECT)
-	g++ $(OBJECT) -o $(EXEC)
+	$(CXX) $(CXXFLAGS) $(OBJECT) -o $(EXEC)
 
 $(OBJECT): $(SRC)
-	g++ $(SRC) -o $(OBJECT) -c
+	$(CXX) $(CXXFLAGS) -c $(SRC) -o $(OBJECT)
 
-clear:
-	rm *.o $(EXEC)
+clean:
+	rm -f *.o $(EXEC)
