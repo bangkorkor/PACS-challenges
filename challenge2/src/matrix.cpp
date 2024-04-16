@@ -15,14 +15,171 @@ namespace algebra
     template <typename T, StorageOrder order>
     void Matrix<T, order>::printMatrix() const
     {
-        for (std::size_t i = 0; i < m_rows; ++i)
+        if (order == StorageOrder::RowMajor)
+        {
+            for (std::size_t i = 0; i < m_rows; ++i)
+            {
+                for (std::size_t j = 0; j < m_cols; ++j)
+                {
+                    std::cout << getVal(i, j) << " ";
+                }
+                std::cout << "\n";
+            }
+        }
+        else
         {
             for (std::size_t j = 0; j < m_cols; ++j)
             {
-                std::cout << getVal(i, j) << " ";
+                for (std::size_t i = 0; i < m_rows; ++i)
+                {
+                    std::cout << getVal(i, j) << " ";
+                }
+                std::cout << "\n";
             }
-            std::cout << std::endl;
         }
+    }
+
+    template <typename T, StorageOrder order>
+    void Matrix<T, order>::printArray() const
+    {
+        std::cout << "-----DEBUG: Printing array\n";
+        for (const auto &elem : m_matrix)
+        {
+            std::cout << elem.first[0] << " " << elem.first[1] << " " << elem.second << "\n";
+        }
+    }
+
+    template <typename T, StorageOrder order>
+    void Matrix<T, order>::resize(std::size_t new_rows, std::size_t new_cols)
+    {
+        m_rows = new_rows;
+        m_cols = new_cols;
+    }
+
+    template <typename T, StorageOrder order>
+    bool Matrix<T, order>::is_compressed() const
+    {
+        return compressed;
+    }
+
+    template <typename T, StorageOrder order>
+    void Matrix<T, order>::compress()
+    {
+        if (compressed)
+        {
+            std::cout << "---------DEBUG: Matrix is already compressed\n";
+            return;
+        }
+
+        if (order == StorageOrder::RowMajor)
+        {
+            std::cout << "--------DEBUG: Compressing row major matrix\n";
+            for (std::size_t i = 0; i < m_rows; ++i)
+            {
+                for (std::size_t j = 0; j < m_cols; ++j)
+                {
+                    if (getVal(i, j) != 0)
+                    {
+                        m_matrix[{i, j}] = getVal(i, j);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (std::size_t j = 0; j < m_cols; ++j)
+            {
+                for (std::size_t i = 0; i < m_rows; ++i)
+                {
+                    if (getVal(i, j) != 0)
+                    {
+                        m_matrix[{i, j}] = getVal(i, j);
+                    }
+                }
+            }
+        }
+
+        compressed = true;
+    }
+
+    template <typename T, StorageOrder order>
+    void Matrix<T, order>::compressCOO()
+    {
+        if (compressed)
+        {
+            std::cout << "---------DEBUG: Matrix is already compressed\n";
+            return;
+        }
+
+        std::map<std::array<std::size_t, 2>, T> compressed_matrix;
+        if (order == StorageOrder::RowMajor)
+        {
+            for (std::size_t i = 0; i < m_rows; ++i)
+            {
+                for (std::size_t j = 0; j < m_cols; ++j)
+                {
+                    if (getVal(i, j) != 0)
+                    {
+                        compressed_matrix[{i, j}] = getVal(i, j);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (std::size_t j = 0; j < m_cols; ++j)
+            {
+                for (std::size_t i = 0; i < m_rows; ++i)
+                {
+                    if (getVal(i, j) != 0)
+                    {
+                        compressed_matrix[{i, j}] = getVal(i, j);
+                    }
+                }
+            }
+        }
+
+        m_matrix = compressed_matrix;
+        compressed = true;
+    }
+
+    template <typename T, StorageOrder order>
+    void Matrix<T, order>::uncompress()
+    {
+        if (!compressed)
+        {
+            std::cout << "---------DEBUG: Matrix is already uncompressed\n";
+            return;
+        }
+
+        if (order == StorageOrder::RowMajor)
+        {
+            for (std::size_t i = 0; i < m_rows; ++i)
+            {
+                for (std::size_t j = 0; j < m_cols; ++j)
+                {
+                    if (m_matrix.find({i, j}) == m_matrix.end())
+                    {
+                        m_matrix[{i, j}] = 0;
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (std::size_t j = 0; j < m_cols; ++j)
+            {
+                for (std::size_t i = 0; i < m_rows; ++i)
+                {
+                    if (m_matrix.find({i, j}) == m_matrix.end())
+                    {
+                        m_matrix[{i, j}] = 0;
+                    }
+                }
+            }
+        }
+
+        compressed = false;
     }
 
     // Explicit template instantiation

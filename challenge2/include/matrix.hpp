@@ -23,10 +23,21 @@ namespace algebra
         bool compressed = false;
 
     public:
-        Matrix(std::size_t rows_, std::size_t cols_) : m_rows(rows_), m_cols(cols_) {} // constructor, only defined
+        Matrix(std::size_t rows_, std::size_t cols_) : m_rows(rows_), m_cols(cols_)
+        {
+            // Initialize the matrix with zeros
+            for (std::size_t i = 0; i < m_rows; ++i)
+            {
+                for (std::size_t j = 0; j < m_cols; ++j)
+                {
+                    m_matrix[{i, j}] = 0;
+                }
+            }
+        } // constructor
 
         void printMatrix() const;
         T getVal(std::size_t i, std::size_t j) const;
+        void printArray() const;
 
         // Overload the [] operator
         T &operator()(std::size_t i, std::size_t j)
@@ -36,6 +47,7 @@ namespace algebra
 
         // TODO
         void compress();
+        void compressCOO();
         void uncompress();
         bool is_compressed() const;
         void resize(std::size_t new_rows, std::size_t new_cols);
