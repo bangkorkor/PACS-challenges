@@ -39,18 +39,16 @@ namespace algebra
         T getVal(std::size_t i, std::size_t j) const;
         void printArray() const;
 
-        // Overload the [] operator
-        T &operator()(std::size_t i, std::size_t j)
-        {
-            return m_matrix[{i, j}];
-        }
-
-        // TODO
-        void compress();
         void compressCOO();
         void uncompress();
         bool is_compressed() const;
         void resize(std::size_t new_rows, std::size_t new_cols);
+
+        // Overload the () operator
+        T &operator()(std::size_t i, std::size_t j)
+        {
+            return m_matrix[{i, j}];
+        }
     };
 
 } // namespace algebra

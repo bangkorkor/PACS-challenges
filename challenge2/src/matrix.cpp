@@ -4,7 +4,7 @@
 
 namespace algebra
 {
-
+    // gets value at position (i, j), NEEDS TESTING FOR COMPRESSED AND UNCOMRESSED MATRICES
     template <typename T, StorageOrder order>
     T Matrix<T, order>::getVal(std::size_t i, std::size_t j) const
     {
@@ -12,6 +12,7 @@ namespace algebra
         return it != m_matrix.end() ? it->second : 0; // Return 0 if the element is not found
     }
 
+    // prints the matrix, only for vizualization
     template <typename T, StorageOrder order>
     void Matrix<T, order>::printMatrix() const
     {
@@ -39,6 +40,7 @@ namespace algebra
         }
     }
 
+    // prints an array of the matrix, you can see the values and their positions
     template <typename T, StorageOrder order>
     void Matrix<T, order>::printArray() const
     {
@@ -49,6 +51,7 @@ namespace algebra
         }
     }
 
+    // resizes the matrix, NEEDS TESTING
     template <typename T, StorageOrder order>
     void Matrix<T, order>::resize(std::size_t new_rows, std::size_t new_cols)
     {
@@ -56,52 +59,14 @@ namespace algebra
         m_cols = new_cols;
     }
 
+    // checks if the matrix is compressed
     template <typename T, StorageOrder order>
     bool Matrix<T, order>::is_compressed() const
     {
         return compressed;
     }
 
-    template <typename T, StorageOrder order>
-    void Matrix<T, order>::compress()
-    {
-        if (compressed)
-        {
-            std::cout << "---------DEBUG: Matrix is already compressed\n";
-            return;
-        }
-
-        if (order == StorageOrder::RowMajor)
-        {
-            std::cout << "--------DEBUG: Compressing row major matrix\n";
-            for (std::size_t i = 0; i < m_rows; ++i)
-            {
-                for (std::size_t j = 0; j < m_cols; ++j)
-                {
-                    if (getVal(i, j) != 0)
-                    {
-                        m_matrix[{i, j}] = getVal(i, j);
-                    }
-                }
-            }
-        }
-        else
-        {
-            for (std::size_t j = 0; j < m_cols; ++j)
-            {
-                for (std::size_t i = 0; i < m_rows; ++i)
-                {
-                    if (getVal(i, j) != 0)
-                    {
-                        m_matrix[{i, j}] = getVal(i, j);
-                    }
-                }
-            }
-        }
-
-        compressed = true;
-    }
-
+    // compresses the matrix using COO, NEEDS TESTING
     template <typename T, StorageOrder order>
     void Matrix<T, order>::compressCOO()
     {
@@ -143,6 +108,7 @@ namespace algebra
         compressed = true;
     }
 
+    // uncompresses the matrix
     template <typename T, StorageOrder order>
     void Matrix<T, order>::uncompress()
     {
