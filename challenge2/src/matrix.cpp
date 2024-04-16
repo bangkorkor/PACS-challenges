@@ -172,6 +172,20 @@ namespace algebra
         compressed = false;
     }
 
+    // Overload the () operator
+    template <typename T, StorageOrder order>
+    T &Matrix<T, order>::operator()(std::size_t i, std::size_t j)
+    {
+        // if out of bounds, throw error
+        static T error_value;
+        if (i >= m_rows || j >= m_cols)
+        {
+            std::cout << "ERROR: Cannot add value, " << i << " " << j << " is out of bounds\n";
+            return error_value;
+        }
+        return m_matrix[{i, j}];
+    }
+
     // Explicit template instantiation
     template class Matrix<int, StorageOrder::RowMajor>;
     template class Matrix<int, StorageOrder::ColumnMajor>;

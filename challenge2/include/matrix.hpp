@@ -45,10 +45,7 @@ namespace algebra
         void resize(std::size_t new_rows, std::size_t new_cols);
 
         // Overload the () operator
-        T &operator()(std::size_t i, std::size_t j)
-        {
-            return m_matrix[{i, j}];
-        }
+        T &operator()(std::size_t i, std::size_t j);
     };
 
 } // namespace algebra
