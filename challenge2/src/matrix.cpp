@@ -1,6 +1,9 @@
 #include "matrix.hpp"
 #include <iostream>
 #include <string>
+#include <map>
+#include <array>
+#include <vector>
 
 namespace algebra
 {
@@ -44,7 +47,7 @@ namespace algebra
     template <typename T, StorageOrder order>
     void Matrix<T, order>::printArray() const
     {
-        std::cout << "-----DEBUG: Printing array\n";
+        std::cout << "-----: Printing array\n";
         for (const auto &elem : m_matrix)
         {
             std::cout << elem.first[0] << " " << elem.first[1] << " " << elem.second << "\n";
@@ -55,7 +58,7 @@ namespace algebra
     template <typename T, StorageOrder order>
     void Matrix<T, order>::resize(std::size_t new_rows, std::size_t new_cols)
     {
-        std::cout << "---------DEBUG: Resizing matrix " << m_rows << "x" << m_cols << " to " << new_rows << "x" << new_cols << "\n";
+        std::cout << "---------: Resizing matrix " << m_rows << "x" << m_cols << " to " << new_rows << "x" << new_cols << "\n";
         if (new_rows == m_rows && new_cols == m_cols)
         {
             return;
@@ -96,7 +99,7 @@ namespace algebra
     {
         if (compressed)
         {
-            std::cout << "---------DEBUG: Matrix is already compressed\n";
+            std::cout << "---------: Matrix is already compressed\n";
             return;
         }
 
@@ -138,7 +141,7 @@ namespace algebra
     {
         if (!compressed)
         {
-            std::cout << "---------DEBUG: Matrix is already uncompressed\n";
+            std::cout << "---------: Matrix is already uncompressed\n";
             return;
         }
 
@@ -193,10 +196,50 @@ namespace algebra
         return m_matrix[{i, j}];
     }
 
+    // Function to multiply a matrix with a vector
+    template <typename T, StorageOrder order>
+    std::vector<T> operator*(const Matrix<T, order> &mat, const std::vector<T> &vec)
+    {
+        if (mat.m_cols != vec.size())
+        {
+            std::cerr << "Error: Matrix and vector dimensions do not match for multiplication.\n";
+            return {};
+        }
+
+        std::vector<T> res(mat.m_rows, 0);
+        if (order == StorageOrder::RowMajor)
+        {
+            for (std::size_t i = 0; i < mat.m_rows; ++i)
+            {
+                for (std::size_t j = 0; j < mat.m_cols; ++j)
+                {
+                    res[i] += mat.getVal(i, j) * vec[j];
+                }
+            }
+        }
+        else
+        {
+            for (std::size_t j = 0; j < mat.m_cols; ++j)
+            {
+                for (std::size_t i = 0; i < mat.m_rows; ++i)
+                {
+                    res[i] += mat.getVal(i, j) * vec[j];
+                }
+            }
+        }
+        return res;
+    }
+
     // Explicit template instantiation
     template class Matrix<int, StorageOrder::RowMajor>;
     template class Matrix<int, StorageOrder::ColumnMajor>;
     template class Matrix<double, StorageOrder::RowMajor>;
     template class Matrix<double, StorageOrder::ColumnMajor>;
+
+    // Explicit template instantiation for operators
+    template std::vector<int> operator*(const Matrix<int, StorageOrder::RowMajor> &mat, const std::vector<int> &vec);
+    template std::vector<int> operator*(const Matrix<int, StorageOrder::ColumnMajor> &mat, const std::vector<int> &vec);
+    template std::vector<double> operator*(const Matrix<double, StorageOrder::RowMajor> &mat, const std::vector<double> &vec);
+    template std::vector<double> operator*(const Matrix<double, StorageOrder::ColumnMajor> &mat, const std::vector<double> &vec);
 
 } // namespace algebra

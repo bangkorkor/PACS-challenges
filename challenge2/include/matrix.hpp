@@ -46,6 +46,10 @@ namespace algebra
 
         // Overload the () operator
         T &operator()(std::size_t i, std::size_t j);
+
+        // Friend operator to multiply matrix with a vector
+        template <typename U, StorageOrder o>
+        friend std::vector<U> operator*(const Matrix<U, o> &mat, const std::vector<U> &vec);
     };
 
 } // namespace algebra
