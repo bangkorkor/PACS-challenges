@@ -6,7 +6,11 @@ No external libaries needed, just navigate to the challenge2 directory and do ``
 Do ```./build/main``` to execute
 
 
-## Remarks about functions 
+## Remarks
+
+### RowMajor ColumnMajor
+
+I dont realy understand the different orderings 
 
 ### () operator
 
