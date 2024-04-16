@@ -9,7 +9,7 @@ namespace algebra
     T Matrix<T, order>::getVal(std::size_t i, std::size_t j) const
     {
         auto it = m_matrix.find({i, j});
-        return it != m_matrix.end() ? it->second : 0;
+        return it != m_matrix.end() ? it->second : 0; // Return 0 if the element is not found
     }
 
     template <typename T, StorageOrder order>
