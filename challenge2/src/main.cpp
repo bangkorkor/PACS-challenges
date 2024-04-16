@@ -9,10 +9,10 @@ int main()
     m(1, 1) = 8;
     m(2, 2) = 100;
     m.printArray();
-
     m.compressCOO();
     m.printArray();
-    m(2, 1) = 10;
+    m(0, 1) = 80;
     m.printArray();
+
     return 0;
 }

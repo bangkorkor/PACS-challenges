@@ -183,6 +183,13 @@ namespace algebra
             std::cout << "ERROR: Cannot add value, " << i << " " << j << " is out of bounds\n";
             return error_value;
         }
+
+        // if compressed you can not add new values only change existing ones
+        if (compressed && m_matrix.find({i, j}) == m_matrix.end())
+        {
+            std::cout << "ERROR: Cannot add value, matrix is compressed\n";
+            return error_value;
+        }
         return m_matrix[{i, j}];
     }
 
