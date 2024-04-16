@@ -55,8 +55,32 @@ namespace algebra
     template <typename T, StorageOrder order>
     void Matrix<T, order>::resize(std::size_t new_rows, std::size_t new_cols)
     {
+        std::cout << "---------DEBUG: Resizing matrix " << m_rows << "x" << m_cols << " to " << new_rows << "x" << new_cols << "\n";
+        if (new_rows == m_rows && new_cols == m_cols)
+        {
+            return;
+        }
+
+        std::map<std::array<std::size_t, 2>, T> new_matrix;
+        for (std::size_t i = 0; i < new_rows; ++i)
+        {
+            for (std::size_t j = 0; j < new_cols; ++j)
+            {
+                if (i < m_rows && j < m_cols)
+                {
+                    new_matrix[{i, j}] = getVal(i, j);
+                }
+                else
+                {
+                    new_matrix[{i, j}] = 0;
+                }
+            }
+        }
+
+        m_matrix = new_matrix;
         m_rows = new_rows;
         m_cols = new_cols;
+        compressed = false;
     }
 
     // checks if the matrix is compressed
