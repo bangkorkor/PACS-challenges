@@ -10,4 +10,4 @@ Do ```./build/main``` to execute
 
 ### Resize
 
-You can resize matrices in compressed and uncompressed state. You can make matrices larger, and the new places will be initialized with zeros. You can make matrices smaller and the deleted places will get lost.
+You can resize matrices in compressed and uncompressed state. You can make matrices larger, and the new places will be initialized with zeros. You can make matrices smaller and the deleted places will get lost. After resizing the matrix will always be in uncompressed state.

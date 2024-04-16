@@ -10,10 +10,8 @@ int main()
     m.compressCOO();
     m.printArray();
 
-    m.resize(4, 4);
-    m(3, 3) = 10;
-    m.printArray();
     m.resize(2, 2);
+
     m.printArray();
     return 0;
 }

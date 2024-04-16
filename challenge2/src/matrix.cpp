@@ -51,7 +51,7 @@ namespace algebra
         }
     }
 
-    // resizes the matrix, NEEDS TESTING
+    // resizes the matrix
     template <typename T, StorageOrder order>
     void Matrix<T, order>::resize(std::size_t new_rows, std::size_t new_cols)
     {
