@@ -1,22 +1,22 @@
 # Challenges 2 
 
-## A Spare Matrix 
+### A Spare Matrix 
 
-It is often necessary to exploit sparsity to be able to operate with large matrices. We also want a reader of matrices written on *Market Matrix Form*. See [pdf](https://github.com/bangkorkor/PACS-challenges/blob/main/challenge2/doc/Challenge23-24-2.pdf) for documentation.
+It is often necessary to exploit sparsity to be able to operate with large matrices. We also want a reader of matrices written on *Matrix Market Form*. See [pdf](https://github.com/bangkorkor/PACS-challenges/blob/main/challenge2/doc/Challenge23-24-2.pdf) for documentation.
 
 
 
-## To run code 
+### To run code 
 
 No external libaries needed, just navigate to the challenge2 directory and do ```make``` to compile. 
 Do ```./build/main``` to execute
 
 
-## Results 
+### Results 
 
 When running the test_time_RowMajor and test_time_ColumnMajor functions one can clearly see that the run time is quicker when the matix is compressed rather then uncompressed, around 60% quicker. 
 
-## Remarks
+# Remarks
 
 ### RowMajor ColumnMajor
 
