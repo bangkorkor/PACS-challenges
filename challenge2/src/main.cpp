@@ -1,26 +1,30 @@
 #include "matrix.hpp"
+#include "readMatrix.hpp"
 #include <iostream>
 
 #include <vector>
 
 int main()
 {
-    algebra::Matrix<int, algebra::StorageOrder::RowMajor> m(3, 3);
-    m(0, 0) = 1;
-    m(0, 1) = 2;
-    m(0, 2) = 3;
-    m(1, 0) = 4;
-    m(1, 1) = 5;
-    m(1, 2) = 6;
-    m(2, 0) = 7;
-    m(2, 1) = 8;
-    m(2, 2) = 9;
-    m.printArray();
+    // path of file to be read in Market Matrix Format
+    std::string filename = "data/a.mtx";
 
-    std::vector<int> v = {2, 1, 0};
-    std::vector<int> res = m * v;
+    // Read the matrix from a file
+    algebra::Matrix<double, algebra::StorageOrder::RowMajor> mat = algebra::readMatrix<double, algebra::StorageOrder::RowMajor>(filename);
+    mat.compressCOO();
+    // Print the matrix
+    mat.printArray();
 
-    std::cout << "Result of matrix-vector multiplication: " << res[0] << " " << res[1] << " " << res[2] << "\n";
+    std::vector<double> vec = {1, 2, 3};
+    std::vector<double> res = mat * vec;
+
+    // Print the result
+    std::cout << "Result: \n\n";
+    for (auto &val : res)
+    {
+        std::cout << val << " ";
+    }
+    std::cout << "\n";
 
     return 0;
 }
