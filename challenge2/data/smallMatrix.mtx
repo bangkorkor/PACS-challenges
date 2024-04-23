@@ -1,0 +1,13 @@
+%%MatrixMarket matrix coordinate real general
+% this is a 3x3 matrix with 9 non-zero elements
+% 
+3 3 9
+1 1 3 
+1 2 9
+1 3 10
+2 1 2
+2 2 90
+2 3 5
+3 1 6
+3 2 1
+3 3 70

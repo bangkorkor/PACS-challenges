@@ -7,7 +7,7 @@
 int main()
 {
     // path of file to be read in Market Matrix Format
-    std::string filename = "data/a.mtx";
+    std::string filename = "data/lnsp_131.mtx";
 
     // Read the matrix from a file
     algebra::Matrix<double, algebra::StorageOrder::RowMajor> mat = algebra::readMatrix<double, algebra::StorageOrder::RowMajor>(filename);

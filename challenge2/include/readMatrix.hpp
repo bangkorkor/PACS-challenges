@@ -32,26 +32,37 @@ namespace algebra
         std::size_t row, col;
         T val;
 
-        // Read the header
-        std::getline(file, line);
-        if (line[0] != '%')
+        // Skip all comment lines
+        do
         {
-            throw std::runtime_error("Invalid header");
-        }
+            std::getline(file, line);
+        } while (line[0] == '%');
 
-        // Read the header
-        std::getline(file, line);
+        // Parse the dimensions and number of non-zero entries
         std::istringstream iss(line);
-        iss >> rows >> cols >> nnz;
+        if (!(iss >> rows >> cols >> nnz))
+        {
+            throw std::runtime_error("Failed to read matrix dimensions and nnz");
+        }
 
         Matrix<T, order> m(rows, cols);
 
-        // Read the data
+        // Read the non-zero elements
         while (std::getline(file, line))
         {
+            if (line[0] == '%')
+                continue; // Skip comment lines in the data section
+
             std::istringstream iss(line);
-            iss >> row >> col >> val;
-            m(row - 1, col - 1) = val;
+            if (iss >> row >> col >> val)
+            {
+                m(row - 1, col - 1) = val; // Convert 1-based index to 0-based index
+            }
+            else
+            {
+                std::cerr << "Error reading matrix data" << std::endl;
+                throw std::runtime_error("Invalid matrix data");
+            }
         }
 
         return m;
