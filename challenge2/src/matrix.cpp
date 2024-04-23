@@ -1,9 +1,10 @@
-#include "matrix.hpp"
 #include <iostream>
 #include <string>
 #include <map>
 #include <array>
 #include <vector>
+
+#include "matrix.hpp"
 
 namespace algebra
 {

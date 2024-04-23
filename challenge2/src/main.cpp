@@ -9,13 +9,13 @@ int main()
     std::string filename = "data/lnsp_131.mtx";
 
     // Test for creating and compressing a simple matrix
-    test_MakeAndCompress();
+    // test_MakeAndCompress();
 
     // Test for multiplying a matrix with a vector in different cases
-    test_MatrixTimesVector();
+    // test_MatrixTimesVector();
 
     // Test for reading the matrix lnsp_131.mtx
-    test_ReadMatrix(filename);
+    // test_ReadMatrix(filename);
 
     std::vector<double> vec = makeSparseVector();
 

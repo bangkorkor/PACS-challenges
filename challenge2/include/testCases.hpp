@@ -2,9 +2,10 @@
 #ifndef TESTCASES_H
 #define TESTCASES_H
 
+#include <chrono>
+
 #include "matrix.hpp"
 #include "readMatrix.hpp"
-#include <chrono>
 
 void test_MakeAndCompress()
 {
