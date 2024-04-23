@@ -8,7 +8,7 @@
 
 namespace algebra
 {
-    // gets value at position (i, j), NEEDS TESTING FOR COMPRESSED AND UNCOMRESSED MATRICES
+    // gets value at position (i, j)
     template <typename T, StorageOrder order>
     T Matrix<T, order>::getVal(std::size_t i, std::size_t j) const
     {
@@ -16,7 +16,7 @@ namespace algebra
         return it != m_matrix.end() ? it->second : 0; // Return 0 if the element is not found
     }
 
-    // prints the matrix, only for vizualization
+    // prints the matrix. Only for vizualization
     template <typename T, StorageOrder order>
     void Matrix<T, order>::printMatrix() const
     {
@@ -44,7 +44,7 @@ namespace algebra
         }
     }
 
-    // prints an array of the matrix, you can see the values and their positions
+    // prints an array of the matrix, you can see the values and their positions. Only for vizualization
     template <typename T, StorageOrder order>
     void Matrix<T, order>::printArray() const
     {
@@ -94,7 +94,7 @@ namespace algebra
         return compressed;
     }
 
-    // compresses the matrix using COO, NEEDS TESTING
+    // compresses the matrix using COO
     template <typename T, StorageOrder order>
     void Matrix<T, order>::compressCOO()
     {
@@ -197,7 +197,7 @@ namespace algebra
         return m_matrix[{i, j}];
     }
 
-    // Function to multiply a matrix with a vector
+    // Opertor to multiply a matrix with a vector
     template <typename T, StorageOrder order>
     std::vector<T> operator*(const Matrix<T, order> &mat, const std::vector<T> &vec)
     {
