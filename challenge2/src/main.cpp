@@ -1,30 +1,21 @@
-#include "matrix.hpp"
-#include "readMatrix.hpp"
 #include <iostream>
-
 #include <vector>
+
+#include "testCases.hpp"
 
 int main()
 {
     // path of file to be read in Market Matrix Format
     std::string filename = "data/lnsp_131.mtx";
 
-    // Read the matrix from a file
-    algebra::Matrix<double, algebra::StorageOrder::RowMajor> mat = algebra::readMatrix<double, algebra::StorageOrder::RowMajor>(filename);
-    mat.compressCOO();
-    // Print the matrix
-    mat.printArray();
+    // Test for creating and compressing a simple matrix
+    test_MakeAndCompress();
 
-    std::vector<double> vec = {1, 2, 3};
-    std::vector<double> res = mat * vec;
+    // Test for multiplying a matrix with a vector in different cases
+    test_MatrixTimesVector();
 
-    // Print the result
-    std::cout << "Result: \n\n";
-    for (auto &val : res)
-    {
-        std::cout << val << " ";
-    }
-    std::cout << "\n";
+    // Test for reading the matrix lnsp_131.mtx
+    // test_ReadMatrix(filename);
 
     return 0;
 }
