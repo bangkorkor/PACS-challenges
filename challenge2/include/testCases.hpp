@@ -4,6 +4,7 @@
 
 #include "matrix.hpp"
 #include "readMatrix.hpp"
+#include <chrono>
 
 void test_MakeAndCompress()
 {
@@ -59,9 +60,74 @@ void test_MatrixTimesVector()
 
 void test_ReadMatrix(const std::string &filename)
 {
+    std::cout << "\nTest for reading the matrix ------------\n";
     algebra::Matrix<double, algebra::StorageOrder::RowMajor> mat = algebra::readMatrix<double, algebra::StorageOrder::RowMajor>(filename);
     mat.compressCOO();
     mat.printArray();
+}
+
+// make a sparse vector with 131 elements for testing different cases
+std::vector<double> makeSparseVector()
+{
+    // generate a vector with 131 random elements
+    std::vector<double> vec(131);
+    for (std::size_t i = 0; i < 131; ++i)
+    {
+        vec[i] = rand() % 10;
+    }
+    return vec;
+}
+
+void test_time_RowMajor(const std::string &filename, std::vector<double> &vec)
+{
+    std::cout << "\nTest for multiplying with RowMajor ------------\n";
+    // Uncompressed:
+    algebra::Matrix<double, algebra::StorageOrder::RowMajor> mat = algebra::readMatrix<double, algebra::StorageOrder::RowMajor>(filename);
+    auto start1 = std::chrono::high_resolution_clock::now();
+
+    std::vector<double> res = mat * vec;
+
+    auto stop1 = std::chrono::high_resolution_clock::now();
+    auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(stop1 - start1);
+    std::string placeholder1 = mat.is_compressed() ? "Compressed: " : "Uncompressed: ";
+    std::cout << placeholder1 << duration1.count() << " ms" << std::endl;
+
+    // Compressed:
+    mat.compressCOO();
+    auto start2 = std::chrono::high_resolution_clock::now();
+
+    std::vector<double> res2 = mat * vec;
+
+    auto stop2 = std::chrono::high_resolution_clock::now();
+    auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(stop2 - start2);
+    std::string placeholder2 = mat.is_compressed() ? "Compressed: " : "Uncompressed: ";
+    std::cout << placeholder2 << duration2.count() << " ms" << std::endl;
+}
+
+void test_time_ColumnMajor(const std::string &filename, std::vector<double> &vec)
+{
+    std::cout << "\nTest for multiplying with ColumnMajor ------------\n";
+    // Uncompressed:
+    algebra::Matrix<double, algebra::StorageOrder::ColumnMajor> mat = algebra::readMatrix<double, algebra::StorageOrder::ColumnMajor>(filename);
+    auto start1 = std::chrono::high_resolution_clock::now();
+
+    std::vector<double> res = mat * vec;
+
+    auto stop1 = std::chrono::high_resolution_clock::now();
+    auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(stop1 - start1);
+    std::string placeholder1 = mat.is_compressed() ? "Compressed: " : "Uncompressed: ";
+    std::cout << placeholder1 << duration1.count() << " ms" << std::endl;
+
+    // Compressed:
+    mat.compressCOO();
+    auto start2 = std::chrono::high_resolution_clock::now();
+
+    std::vector<double> res2 = mat * vec;
+
+    auto stop2 = std::chrono::high_resolution_clock::now();
+    auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(stop2 - start2);
+    std::string placeholder2 = mat.is_compressed() ? "Compressed: " : "Uncompressed: ";
+    std::cout << placeholder2 << duration2.count() << " ms" << std::endl;
 }
 
 #endif

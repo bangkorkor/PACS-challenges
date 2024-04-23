@@ -15,7 +15,13 @@ int main()
     test_MatrixTimesVector();
 
     // Test for reading the matrix lnsp_131.mtx
-    // test_ReadMatrix(filename);
+    test_ReadMatrix(filename);
 
-    return 0;
+    std::vector<double> vec = makeSparseVector();
+
+    // Test for multiplying with RowMajor
+    test_time_RowMajor(filename, vec);
+
+    // Test for multiplying with ColumnMajor
+    test_time_ColumnMajor(filename, vec);
 }
