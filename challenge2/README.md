@@ -18,9 +18,9 @@ When running the test_time_RowMajor and test_time_ColumnMajor functions one can 
 
 # Remarks
 
-### RowMajor ColumnMajor
+### Dynamic vs compressed
 
-I dont realy understand the different orderings. Little difference in run time when multiplying matrix with vector for the different orderings. 
+I think i have misunderstoop what compressed and uncompressed matricies are, therefore when the matrix is compressed it is actually on COO form, which is uncompressed in regard to the challenge-description. When my matrix is uncompressed, zero-elements also are initialized. When I call the compressCOO() function, only non-zero elements are kept in the map. This still makes the matrix-vector multiplication faster. 
 
 ### () operator
 
